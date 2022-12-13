@@ -44,7 +44,7 @@ public class WorldStates
         }
     }
 
-    private void RemoveState(string key) 
+    public void RemoveState(string key) 
     {
         if (HasState(key)) 
         {

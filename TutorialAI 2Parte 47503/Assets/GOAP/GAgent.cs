@@ -6,6 +6,7 @@ using System.Linq;
 public class SubGoal 
 {
     public Dictionary<string, int> sGoals;
+    public IEnumerable<KeyValuePair<string, int>> sgoals;
     public bool remove;
 
     public SubGoal(string s, int i, bool r) 
@@ -20,6 +21,8 @@ public class GAgent : MonoBehaviour
 {
     public List<GAction> actions = new List<GAction>();
     public Dictionary<SubGoal, int> goals = new Dictionary<SubGoal, int>();
+    public GInventory inventory = new GInventory();
+    public WorldStates beliefs = new WorldStates();
 
     GPlanner planner;
     Queue<GAction> actionQueue;
@@ -48,12 +51,14 @@ public class GAgent : MonoBehaviour
     {
         if (currentAction != null && currentAction.running) 
         {
-            if (currentAction.agent.hasPath && currentAction.agent.remainingDistance < 1.0f) 
+            float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
+            if (currentAction.agent.hasPath && distanceToTarget < 2.0f) 
             {
+                Debug.Log("Distance to Goal: " + currentAction.agent.remainingDistance);
                 if (!invoked) 
                 {
                     Invoke("CompleteAction", currentAction.duration);
-                    invoked = false;
+                    invoked = true;
                 }
             }
             return;
@@ -67,7 +72,7 @@ public class GAgent : MonoBehaviour
 
             foreach (KeyValuePair<SubGoal, int> sg in sortedGoals) 
             {
-                actionQueue = planner.plan(actions, sg.Key.sGoals, null);
+                actionQueue = planner.plan(actions, sg.Key.sGoals, beliefs);
                 if (actionQueue != null) 
                 {
                     currentGoal = sg.Key;
