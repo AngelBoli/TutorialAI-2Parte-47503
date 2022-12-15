@@ -4719,6 +4719,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 588527337, guid: ab67adac374f7c441bad02523cd6cbd5, type: 3}
+      propertyPath: afterEffects.Array.data[0].key
+      value: isTreated
+      objectReference: {fileID: 0}
     - target: {fileID: 2456355895437139442, guid: ab67adac374f7c441bad02523cd6cbd5, type: 3}
       propertyPath: m_RootOrder
       value: 2
